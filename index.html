@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Movie Recommender</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            height:100vh;
+            background: url("https://images.unsplash.com/photo-1517602302552-471fe67acf66") no-repeat center center/cover;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            position:relative;
+        }
+
+        /* Dark Overlay */
+        body::after{
+            content:"";
+            position:absolute;
+            width:100%;
+            height:100%;
+            background:linear-gradient(to top,rgba(0,0,0,0.9),rgba(0,0,0,0.7));
+            z-index:0;
+        }
+
+        .container{
+            position:relative;
+            z-index:1;
+            text-align:center;
+            width:500px;
+            color:white;
+        }
+
+        h1{
+            font-size:40px;
+            font-weight:700;
+            margin-bottom:10px;
+            letter-spacing:2px;
+        }
+
+        .tagline{
+            font-size:16px;
+            margin-bottom:40px;
+            color:#ccc;
+        }
+
+        .option-title{
+            font-size:18px;
+            margin-bottom:20px;
+            font-weight:500;
+        }
+
+        .card{
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(12px);
+            padding:25px;
+            border-radius:15px;
+            margin-bottom:25px;
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            box-shadow:0 20px 40px rgba(0,0,0,0.6);
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            margin-top:10px;
+            outline:none;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            border-radius:8px;
+            margin-top:15px;
+            background:#e50914;
+            color:white;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#b20710;
+        }
+
+        .results{
+            margin-top:30px;
+            text-align:left;
+        }
+
+        .movie-box{
+            background:rgba(255,255,255,0.1);
+            padding:10px;
+            border-radius:6px;
+            margin-bottom:8px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🎬 Movie AI</h1>
+    <div class="tagline">Get smart movie suggestions instantly</div>
+
+    <div class="option-title">
+        👉 What would you like to enter?
+    </div>
+
+    <!-- Content Based -->
+    <div class="card">
+        <h3>🎥 Enter Movie Name</h3>
+        <form method="POST">
+            <input type="text" name="movie" placeholder="Example: Avengers, Batman, Titanic">
+            <button type="submit">Get Similar Movies</button>
+        </form>
+    </div>
+
+    <!-- Collaborative -->
+    <div class="card">
+        <h3>👤 Enter User ID</h3>
+        <form method="POST">
+            <input type="number" name="user_id" placeholder="Example: 1, 2, 3">
+            <button type="submit">Get Personalized Recommendations</button>
+        </form>
+    </div>
+
+    {% if recommendations %}
+    <div class="results">
+        <h3>🎯 Recommended Movies:</h3>
+        {% for movie in recommendations %}
+        <div class="movie-box">
+            {{ movie }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
