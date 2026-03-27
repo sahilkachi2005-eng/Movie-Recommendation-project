@@ -2,8 +2,6 @@
 
 This document provides a comprehensive overview of the system's design, data structures, and behavioral flows.
 
----
-
 ## 1. Data Flow Diagram (DFD) - Level 0
 Represents how data moves between the user, the admin, and the local storage system.
 
@@ -16,7 +14,11 @@ flowchart TD
     System -->|Update Confirmation| Admin
     
     System <-->|Read/Write Movie Data| DB[(LocalStorage JSON DB)]
+```
 
+## 2. Entity Relationship Diagram
+
+```mermaid
 erDiagram
     MEDIA_ITEM {
         string name PK
@@ -29,20 +31,21 @@ erDiagram
     }
     
     MEDIA_ITEM ||--o{ MEDIA_ITEM : "has similarity score with"
+```
 
+## 3. Use Case Diagram
+
+```mermaid
 flowchart LR
-    %% Actors
     U([User])
     A([Admin])
     
-    %% Use Cases
-    Search(Search Movies/Series)
-    View(View Movie Details & Recommendations)
-    Watch(Watch Trailer)
-    Login(Access Admin Panel)
-    Edit(Edit Ratings)
+    Search[Search Movies/Series]
+    View[View Movie Details & Recommendations]
+    Watch[Watch Trailer]
+    Login[Access Admin Panel]
+    Edit[Edit Ratings]
     
-    %% Relationships
     U --> Search
     U --> View
     U --> Watch
@@ -50,15 +53,19 @@ flowchart LR
     A --> Login
     Login --> Edit
     
-    %% Admin inherits User capabilities
     A -.-> U
+```
 
+## 4. Class Diagram - Core Components
+
+```mermaid
 classDiagram
     class ApplicationDB {
-        +Array movies
-        +Array webseries
+        +Array~MediaItem~ movies
+        +Array~MediaItem~ webseries
         +initDB()
         +saveRating(name, rating)
+        +getAllItems()
     }
     
     class MediaItem {
@@ -79,8 +86,11 @@ classDiagram
 
     ApplicationDB "1" *-- "*" MediaItem : contains
     RecommenderEngine --> ApplicationDB : queries
+```
 
+## 5. Instance Diagram
 
+```mermaid
 classDiagram
     class `db: ApplicationDB` {
         movies = [...]
@@ -101,7 +111,11 @@ classDiagram
     
     `db: ApplicationDB` --> `movie1: MediaItem`
     `db: ApplicationDB` --> `series1: MediaItem`
+```
 
+## 6. Sequence Diagram - Search & Recommendation Flow
+
+```mermaid
 sequenceDiagram
     actor User
     participant DOM as UI (DOM)
@@ -122,8 +136,11 @@ sequenceDiagram
     JS->>JS: Sort & slice top 18 related
     JS->>DOM: Render popup overlay
     DOM-->>User: Displays details & related grid
+```
 
+## 7. State Diagram
 
+```mermaid
 stateDiagram-v2
     [*] --> EnterSearchQuery
     EnterSearchQuery --> CheckQueryLength
@@ -140,9 +157,11 @@ stateDiagram-v2
     CalculateSimilarities --> SortBySimilarityScore
     SortBySimilarityScore --> RenderEnlargedPopup
     RenderEnlargedPopup --> [*]
+```
 
+## 8. System Architecture Flow
 
-
+```mermaid
 flowchart TD
     User((User))
     UI[User Interface / DOM]
@@ -155,4 +174,4 @@ flowchart TD
     DB -- "4: returns JSON" --> Logic
     Logic -- "5: returns formatted HTML strings" --> UI
     UI -- "6: displays rendered cards" --> User
-
+```
